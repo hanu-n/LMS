@@ -1,7 +1,8 @@
 import express from 'express';
 import User from '../models/User.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs'
 import generateToken from '../utils/generateToken.js';
+import protect from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -31,7 +32,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ message: 'User registered successfully' });
 
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -64,9 +65,12 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+    console.log(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+
 
 export default router
