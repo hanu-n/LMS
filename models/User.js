@@ -1,10 +1,14 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  fullName: {
+  name: {
     type: String,
     required: true,
     trim: true
+  },
+  age:{
+    type:Number,
+    required:false
   },
   email: {
     type: String,
@@ -17,15 +21,18 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   role: {
-    type: String,
-    enum: ['student', 'teacher', 'admin'],
-    default: 'student'
-  },
-  grade: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Grade',
-    default: null 
-  }
+  type: String,
+  enum: ["admin", "teacher", "studentParent"],
+  default: "studentParent"
+},
+
+ grade: {
+  type: String,
+  default: null
+},
+
+    linkedStudentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
+
 }, { timestamps: true });
 
  const User = mongoose.model('User', userSchema);
