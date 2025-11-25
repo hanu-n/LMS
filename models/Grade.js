@@ -4,7 +4,7 @@ const gradeSchema = new mongoose.Schema(
   {
     student: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Student',
       required: true,
     },
     subject: {
@@ -20,7 +20,16 @@ const gradeSchema = new mongoose.Schema(
     remarks: {
       type: String,
       default: '',
-    }
+    },
+     semister: {            
+      type: String,
+      enum: ["I", "II"],
+      required: true,
+    },
+    published: {          
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

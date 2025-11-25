@@ -9,14 +9,19 @@ import studentRoutes from "./routes/studentRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import feeRoutes  from './routes/feeRoutes.js'
 import attendanceRoutes from "./routes/attendanceRoutes.js";
+import studentPublicRoutes from "./routes/studentPublicRoutes.js";
+import adminRoutes from './routes/adminRoutes.js'
 
 
 
 dotenv.config()
 const app=express()
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors({
+  origin: process.env.CLIENT_URL || '*',
+  credentials: true,
+}));
 
 app.get("/", (req, res) => {
   res.send("🚀 Student Management System API Running...")
@@ -26,9 +31,11 @@ app.get("/", (req, res) => {
 app.use('/api/auth',authRoute)
 app.use('/api/grades',gradeRoute)
 app.use("/api/students", studentRoutes);
+app.use("/api/public", studentPublicRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/fees", feeRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/admin", adminRoutes);
 
 
 

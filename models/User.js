@@ -20,16 +20,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  role: {
+ role: {
   type: String,
-  enum: ["admin", "teacher", "studentParent"],
-  default: "studentParent"
+  enum: ["admin", "teacher","student"],
+  default: "student"
 },
 
- grade: {
+ gradeLevel: {
   type: String,
   default: null
 },
+isApproved: { type: Boolean, default: false },
+
 
     linkedStudentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student" }],
 

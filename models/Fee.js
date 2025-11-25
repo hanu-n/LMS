@@ -7,33 +7,37 @@ const feeSchema = new mongoose.Schema(
       ref: "Student",
       required: true,
     },
-   month: {
-  type: String,
-  enum: [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
+
+    grade: { type: String, required: false },
+    section: { type: String, required: false },
+
+    month: {
+      type: String,
+      enum:[
+    "September", "October", "November", "December",
+    "January", "February", "March", "April", "May", "June",
   ],
-  required: false,
+      required: true,
+    },
+
+   
+
+  // Make feeAmount optional — allow saving records even when fee amount is not provided
+paid: { type: Boolean, default: false },
+    
+
+    paidDate: { type: Date },
+    referenceNumber: {
+  type: String,
+  sparse: true,      
+  trim: true,
+  default: null,    
 },
 
-    feeAmount: { type: Number, required: true },
-    dueAmount: { type: Number, default: 0 },
-    paidDate: { type: Date },
-    paymentMethod: {
-      type: String,
-      enum: ["Cash", "Telebirr", "Bank Transfer", "PayPal"],
-      default: "Cash",
-    },
-    referenceNumber: { type: String, unique: true, sparse: true },
-    status: {
-      type: String,
-      enum: ["Paid", "Pending"],
-      default: "Pending",
-    },
+
     remarks: { type: String, trim: true },
   },
   { timestamps: true }
 );
 
-const Fee = mongoose.model("Fee", feeSchema);
-export default Fee;
+export default mongoose.model("Fee", feeSchema);

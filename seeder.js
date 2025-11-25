@@ -1,105 +1,77 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import bcrypt from "bcryptjs";
-import User from "./models/User.js";
 import Student from "./models/Student.js";
 
 dotenv.config();
 
-const seedData = async () => {
+const students = [
+  { name: "Mikiyas Bekele", studentId: "STU001", gradeLevel: "Grade 1", section: "A", gender: "Male" },
+  { name: "Lidya Tsegaye", studentId: "STU002", gradeLevel: "Grade 1", section: "A", gender: "Female" },
+  { name: "Nahom Dereje", studentId: "STU003", gradeLevel: "Grade 1", section: "A", gender: "Male" },
+  { name: "Helina Tesfaw", studentId: "STU004", gradeLevel: "Grade 1", section: "A", gender: "Female" },
+  { name: "Yonatan Haile", studentId: "STU005", gradeLevel: "Grade 1", section: "A", gender: "Male" },
+  { name: "Marta Worku", studentId: "STU006", gradeLevel: "Grade 1", section: "A", gender: "Female" },
+  { name: "Biruk Solomon", studentId: "STU007", gradeLevel: "Grade 2", section: "B", gender: "Male" },
+  { name: "Sofiya Endale", studentId: "STU008", gradeLevel: "Grade 2", section: "B", gender: "Female" },
+  { name: "Henok Molla", studentId: "STU009", gradeLevel: "Grade 3", section: "A", gender: "Male" },
+  { name: "Ruth Amare", studentId: "STU010", gradeLevel: "Grade 3", section: "A", gender: "Female" },
+
+  { name: "Abel Girma", studentId: "STU011", gradeLevel: "Grade 3", section: "B", gender: "Male" },
+  { name: "Sena Daniel", studentId: "STU012", gradeLevel: "Grade 3", section: "B", gender: "Female" },
+  { name: "Nathaniel Fikre", studentId: "STU013", gradeLevel: "Grade 4", section: "A", gender: "Male" },
+  { name: "Rahel Mesele", studentId: "STU014", gradeLevel: "Grade 4", section: "A", gender: "Female" },
+  { name: "Ethan Samuel", studentId: "STU015", gradeLevel: "Grade 4", section: "B", gender: "Male" },
+  { name: "Bilen Getachew", studentId: "STU016", gradeLevel: "Grade 4", section: "B", gender: "Female" },
+  { name: "Abraham Yared", studentId: "STU017", gradeLevel: "Grade 5", section: "A", gender: "Male" },
+  { name: "Selamawit Desta", studentId: "STU018", gradeLevel: "Grade 5", section: "A", gender: "Female" },
+  { name: "Mulugeta Abate", studentId: "STU019", gradeLevel: "Grade 5", section: "B", gender: "Male" },
+  { name: "Feven Kiros", studentId: "STU020", gradeLevel: "Grade 5", section: "B", gender: "Female" },
+
+  { name: "Henok Kassa", studentId: "STU021", gradeLevel: "Grade 6", section: "A", gender: "Male" },
+  { name: "Lily Mekonen", studentId: "STU022", gradeLevel: "Grade 6", section: "A", gender: "Female" },
+  { name: "Samuel Kassaye", studentId: "STU023", gradeLevel: "Grade 6", section: "B", gender: "Male" },
+  { name: "Hanna Fisseha", studentId: "STU024", gradeLevel: "Grade 6", section: "B", gender: "Female" },
+  { name: "Natnael Birhanu", studentId: "STU025", gradeLevel: "Grade 7", section: "A", gender: "Male" },
+  { name: "Meron Tadele", studentId: "STU026", gradeLevel: "Grade 7", section: "A", gender: "Female" },
+  { name: "Daniel Tsegaw", studentId: "STU027", gradeLevel: "Grade 7", section: "B", gender: "Male" },
+  { name: "Biftu Mohammed", studentId: "STU028", gradeLevel: "Grade 7", section: "B", gender: "Female" },
+  { name: "Ibrahim Jemal", studentId: "STU029", gradeLevel: "Grade 8", section: "A", gender: "Male" },
+  { name: "Eden Teklu", studentId: "STU030", gradeLevel: "Grade 8", section: "A", gender: "Female" },
+
+  { name: "Kidus Alemu", studentId: "STU031", gradeLevel: "Grade 8", section: "B", gender: "Male" },
+  { name: "Mahiya Eshetu", studentId: "STU032", gradeLevel: "Grade 8", section: "B", gender: "Female" },
+  { name: "Yonathan Kibret", studentId: "STU033", gradeLevel: "Grade 1", section: "C", gender: "Male" },
+  { name: "Sara Birru", studentId: "STU034", gradeLevel: "Grade 1", section: "C", gender: "Female" },
+  { name: "Dawit Hagos", studentId: "STU035", gradeLevel: "Grade 2", section: "C", gender: "Male" },
+  { name: "Tsion Mesfin", studentId: "STU036", gradeLevel: "Grade 2", section: "C", gender: "Female" },
+  { name: "Nahom Fitsum", studentId: "STU037", gradeLevel: "Grade 3", section: "C", gender: "Male" },
+  { name: "Rediet Yohannes", studentId: "STU038", gradeLevel: "Grade 3", section: "C", gender: "Female" },
+  { name: "Mikiyas Abay", studentId: "STU039", gradeLevel: "Grade 4", section: "C", gender: "Male" },
+  { name: "Hawi Lemma", studentId: "STU040", gradeLevel: "Grade 4", section: "C", gender: "Female" },
+
+  { name: "Yeabsira Tesema", studentId: "STU041", gradeLevel: "Grade 5", section: "C", gender: "Female" },
+  { name: "Eyob Tadese", studentId: "STU042", gradeLevel: "Grade 5", section: "C", gender: "Male" },
+  { name: "Amanuel Tefera", studentId: "STU043", gradeLevel: "Grade 6", section: "C", gender: "Male" },
+  { name: "Selam Mulu", studentId: "STU044", gradeLevel: "Grade 6", section: "C", gender: "Female" },
+  { name: "Sami Ibrahim", studentId: "STU045", gradeLevel: "Grade 7", section: "C", gender: "Male" },
+  { name: "Kalkidan Tura", studentId: "STU046", gradeLevel: "Grade 7", section: "C", gender: "Female" },
+  { name: "Adam Gomora", studentId: "STU047", gradeLevel: "Grade 8", section: "C", gender: "Male" },
+  { name: "Sosina Reda", studentId: "STU048", gradeLevel: "Grade 8", section: "C", gender: "Female" },
+  { name: "Hanania Yosef", studentId: "STU049", gradeLevel: "Grade 5", section: "A", gender: "Female" },
+  { name: "Robel Sorsa", studentId: "STU050", gradeLevel: "Grade 2", section: "B", gender: "Male" }
+];
+
+const seedStudents = async () => {
   try {
-    // Connect to DB
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("DB connected!");
-
-    // Clear old data
-    await User.deleteMany({});
-    await Student.deleteMany({});
-    console.log("Old data cleared.");
-
-    // Sample students
-    const students = [
-      { name: "Alice Johnson", age: 15, grade: "10", studentId: "CA-2025-001" },
-      { name: "Bob Smith", age: 14, grade: "9", studentId: "CA-2025-002" },
-      { name: "Charlie Brown", age: 16, grade: "11", studentId: "CA-2025-003" },
-      { name: "Diana Prince", age: 15, grade: "10", studentId: "CA-2025-004" },
-      { name: "Ethan Hunt", age: 13, grade: "8", studentId: "CA-2025-005" },
-    ];
-
-    // Create student users and student profiles
-    const studentUsers = [];
-    for (let s of students) {
-      const hashed = await bcrypt.hash("Password123", 10);
-      const user = await User.create({
-        name: s.name,
-        age: s.age,
-        email: s.name.split(" ").join("").toLowerCase() + "@school.com",
-        password: hashed,
-        role: "studentParent", // default role
-        grade: s.grade,
-      });
-
-      const studentProfile = await Student.create({
-        name: s.name,
-        studentId: s.studentId,
-        grade: s.grade,
-        age:s.age,
-        userId: user._id,
-      });
-
-      // link student profile to user
-      user.linkedStudentIds.push(studentProfile._id);
-      await user.save();
-
-      studentUsers.push({ user, studentProfile });
-    }
-
-    // Sample parents
-    const parents = [
-      {
-        name: "Laura Johnson",
-        age: 40,
-        email: "laura.johnson@school.com",
-        password: "Password123",
-        childrenIds: ["CA-2025-001", "CA-2025-004"], // Alice & Diana
-      },
-      {
-        name: "Michael Smith",
-        age: 42,
-        email: "michael.smith@school.com",
-        password: "Password123",
-        childrenIds: ["CA-2025-002"], // Bob
-      },
-    ];
-
-    // Create parent users and link children
-    for (let p of parents) {
-      const hashed = await bcrypt.hash(p.password, 10);
-      const parentUser = await User.create({
-        name: p.name,
-        age: p.age,
-        email: p.email,
-        password: hashed,
-        role: "studentParent",
-      });
-
-      // find and link children
-      for (let childId of p.childrenIds) {
-        const child = await Student.findOne({ studentId: childId });
-        if (child) {
-          parentUser.linkedStudentIds.push(child._id);
-        }
-      }
-
-      await parentUser.save();
-    }
-
-    console.log("Sample students and parents inserted!");
+    await Student.deleteMany();
+    await Student.insertMany(students);
+    console.log("✅ Students seeded successfully (clean version)!");
     process.exit();
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error("❌ Error seeding students:", error);
     process.exit(1);
   }
 };
 
-seedData();
+seedStudents();

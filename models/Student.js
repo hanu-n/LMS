@@ -11,66 +11,29 @@ const studentSchema = new mongoose.Schema(
       required: [true, "Student ID is required"],
       unique: true,
     },
-    grade: {
+    gradeLevel: {
       type: String,
       required: [true, "Grade level is required"],
     },
-    age: {
-      type: Number,
-      required: [true, "Age is required"],
-    },
+    age: Number,
     section: {
       type: String,
       default: "A",
     },
-    dateOfBirth: {
-      type: Date,
-    },
+    dateOfBirth: Date,
     gender: {
       type: String,
       enum: ["Male", "Female"],
+      required: true,
     },
-    parentName: {
-      type: String,
-    },
-    contactNumber: {
-      type: String,
-    },
-    address: {
-      type: String,
-    },
+    contactNumber: String,
+    address: String,
 
-    // 🟢 Connects student to the user (student or parent who registered)
+    // 🟢 Link to user account
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       default: null,
-    },
-
-    attendance: [
-      {
-        _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-        date: { type: Date, required: true },
-        status: {
-          type: String,
-          enum: ["Present", "Absent", "Late"],
-          default: "Present",
-        },
-      },
-    ],
-
-    academicProgress: [
-      {
-        subject: String,
-        score: Number,
-        grade: String,
-      },
-    ],
-
-    fees: {
-      total: { type: Number, default: 0 },
-      paid: { type: Number, default: 0 },
-      due: { type: Number, default: 0 },
     },
   },
   { timestamps: true }
