@@ -18,7 +18,13 @@ dotenv.config()
 const app=express()
 
 app.use(express.json())
-app.use(cors())
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://lms-front-mwgj.onrender.com"],
+    credentials: true,
+  })
+);
+
 
 app.get("/", (req, res) => {
   res.send("🚀 Student Management System API Running...")
