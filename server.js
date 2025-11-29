@@ -17,6 +17,11 @@ import adminRoutes from './routes/adminRoutes.js'
 dotenv.config()
 const app=express()
 
+app.use((req, res, next) => {
+  console.log('Incoming request:', req.method, req.url);
+  console.log('Origin:', req.headers.origin);
+  next();
+});
 app.use(express.json())
 app.use(
   cors({
